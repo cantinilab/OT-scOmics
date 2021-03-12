@@ -1,6 +1,9 @@
 # OT-scOmics
 
-This Jupyter Notebook will walk you trough the code to replicate the experiments from our research on applying OT as a loss function in between single-cell omics data.
+This Jupyter Notebook will walk you trough the code to replicate the experiments from our research on applying Optimal Transport as a loss function in between single-cell omics data.
+
+![image](https://user-images.githubusercontent.com/30904288/110963850-da6c0000-8352-11eb-8c0a-f725c1736169.png)
+
 
 `bioRxiv link here` (Huizing, Peyré, Cantini, 2021)
 
