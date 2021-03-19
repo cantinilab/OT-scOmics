@@ -1,9 +1,12 @@
-# OT-scOmics
+# Optimal Transport improves cell-cell similarity inference in single-cell omics data
 
 This Jupyter Notebook will walk you trough the code to replicate the experiments from our research on applying Optimal Transport as a similarity metric in between single-cell omics data.
 
 ![image](https://user-images.githubusercontent.com/30904288/110963850-da6c0000-8352-11eb-8c0a-f725c1736169.png)
 
+## Optimal Transport for single-cell omics
+
+We propose the use of Optimal Transport (OT) as a cell-cell similarity metric for single-cell omics data. The code in this repository implements entropic-regularized OT distance computation with PyTorch, and applies it to public datasets of single-cell omics data. We compare the results to commonly used metrics like the euclidean distance or Pearson correlation, and demonstrate that OT increases performances in cell-cell similarity inference.
 
 ## Running on Colab GPU
 
