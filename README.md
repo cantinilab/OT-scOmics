@@ -10,6 +10,14 @@ This Jupyter Notebook will walk you trough the code to replicate the experiments
 
 We propose the use of Optimal Transport (OT) as a cell-cell similarity metric for single-cell omics data. The code in this repository implements entropic-regularized OT distance computation with PyTorch, and applies it to public datasets of single-cell omics data. We compare the results to commonly used metrics like the euclidean distance or Pearson correlation, and demonstrate that OT increases performances in cell-cell similarity inference.
 
+## Installing the package
+
+To install the `otscomics` package, run the following line from this folder
+
+    pip install .
+
+We also provide a conda environment `environment.yml` file.
+
 ## Running on Colab GPU
 
 While this notebook can be run un CPU, computations will be faster on GPU. If you do not have access to a GPU you may want to use the (free) Google Colab platform to run this notebook. For that, you can simply access the notebook at this link: [colab.research.google.com/github/ComputationalSystemsBiology/.../OT_scOmics.ipynb](https://colab.research.google.com/github/ComputationalSystemsBiology/OT-scOmics/blob/main/OT_scOmics.ipynb).
