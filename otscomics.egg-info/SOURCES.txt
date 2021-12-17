@@ -1,0 +1,8 @@
+LICENSE
+README.md
+setup.py
+otscomics/__init__.py
+otscomics.egg-info/PKG-INFO
+otscomics.egg-info/SOURCES.txt
+otscomics.egg-info/dependency_links.txt
+otscomics.egg-info/top_level.txt
