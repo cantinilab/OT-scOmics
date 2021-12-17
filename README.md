@@ -1,3 +1,5 @@
+[![DOI](https://zenodo.org/badge/344845096.svg)](https://zenodo.org/badge/latestdoi/344845096)
+
 # Optimal Transport improves cell-cell similarity inference in single-cell omics data
 
 This Jupyter Notebook will walk you trough the code to replicate the experiments from our research on applying Optimal Transport as a similarity metric in between single-cell omics data.
