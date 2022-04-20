@@ -2,6 +2,7 @@ import unittest
 import otscomics
 import pandas as pd
 import numpy as np
+import anndata as ad
 
 class TestOTscomics(unittest.TestCase):
 
@@ -9,15 +10,18 @@ class TestOTscomics(unittest.TestCase):
 
         # Load the data.
         # TODO: put directly in folder.
-        data_path = 'data/liu_scrna_preprocessed.csv.gz'
-        self.data = pd.read_csv(data_path, index_col=0)
+        data = pd.read_csv('data/liu_scrna_preprocessed.csv.gz', index_col=0)
 
         # Retrieve the clusters.
-        clusters = np.array([col.split('_')[-1] for col in self.data.columns])
+        clusters = np.array([col.split('_')[-1] for col in data.columns])
         idx = np.argsort(clusters) # Sorted indices (for visulization)
 
         # Select highly variable genes.
-        self.data = self.data.iloc[np.argsort(self.data.std(1))[::-1][:1_000]]
+        data = data.iloc[np.argsort(data.std(1))[::-1][:1_000]]
+        
+        # Converting to AnnData for the rest of the analysis.
+        self.adata = ad.AnnData(data.T)
+        self.adata.obs['cell_line'] = clusters
 
 
     def test_nothing(self):
