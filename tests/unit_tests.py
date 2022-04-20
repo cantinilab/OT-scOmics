@@ -13,7 +13,6 @@ class TestOTscomics(unittest.TestCase):
         """
 
         # Load the data.
-        # TODO: put directly in folder.
         data = pd.read_csv('data/liu_scrna_preprocessed.csv.gz', index_col=0)
 
         # Retrieve the clusters.
