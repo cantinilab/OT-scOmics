@@ -102,7 +102,7 @@ class TestOTscomics(unittest.TestCase):
         D = cdist(self.adata.X, self.adata.X)
 
         # Compute the C index.
-        score = otscomics.C_index(D, self.adata.obs['celltype'])
+        score = otscomics.C_index(D, self.adata.obs['cell_line'])
 
         # Check that the score is between 0 and 1.
         self.assertGreaterEqual(score, 0)
