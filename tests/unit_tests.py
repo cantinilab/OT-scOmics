@@ -32,6 +32,7 @@ class TestOTscomics(unittest.TestCase):
         C = otscomics.cost_matrix(
             self.adata.X.T, cost='cosine', normalize_features=True)
         self.assertEqual(C.shape, (1_000, 1_000))
+        np.testing.assert_almost_equal(np.diag(C), np.zeros(1_000))
         
 
 if __name__ == '__main__':
