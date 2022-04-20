@@ -33,6 +33,7 @@ class TestOTscomics(unittest.TestCase):
             self.adata.X.T, cost='cosine', normalize_features=True)
         self.assertEqual(C.shape, (1_000, 1_000))
         np.testing.assert_almost_equal(np.diag(C), np.zeros(1_000))
+        np.testing.assert_almost_equal(C.max(), 1)
         
 
 if __name__ == '__main__':
