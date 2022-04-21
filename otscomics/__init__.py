@@ -2,6 +2,7 @@ import torch
 import numpy as np
 from scipy.spatial.distance import cdist
 from tqdm import tqdm
+import ot
 from opt_einsum import contract as einsum
 
 def cost_matrix(data, cost, normalize_features=True):
@@ -16,7 +17,12 @@ def cost_matrix(data, cost, normalize_features=True):
     C = cdist(data, data, metric=cost)
   return C/C.max()
 
-def OT_distance_matrix(data_np, cost, eps=.1, max_iter=100, n_batches=10, threshold=1e-5, dtype=torch.float32, device='cuda', divide_max=True):
+def OT_distance_matrix(
+  data_np, cost, eps=.1, max_iter=100,
+  n_batches=10, threshold=1e-5,
+  dtype=torch.float32, device='cuda',
+  divide_max=True, numItermax=500,
+  stopThr=1e-5):
   """
   Compute OT distance matrix.
   `data_np`: data as a NumPy matrix (on CPU)
@@ -34,12 +40,12 @@ def OT_distance_matrix(data_np, cost, eps=.1, max_iter=100, n_batches=10, thresh
   OTT (https://ott-jax.readthedocs.io/) or Geomloss (https://www.kernel-operations.io/geomloss/).
   """
 
-  # Compute K (inplace)
-  K = torch.from_numpy(cost)
-  K = K.to(device=device, dtype=dtype)
-  
-  K.mul_(-1/eps)
-  K.exp_()
+  # Move the cost to PyTorch.
+  C = torch.from_numpy(cost)
+  C = C.to(device=device, dtype=dtype)
+
+  # Compute the kernel
+  K = torch.exp(-C/eps)
 
   data = torch.from_numpy(data_np)
   data = data.to(device=device, dtype=dtype)
@@ -51,41 +57,61 @@ def OT_distance_matrix(data_np, cost, eps=.1, max_iter=100, n_batches=10, thresh
 
   D = torch.zeros(data.shape[1], data.shape[1], device='cpu', dtype=dtype)
 
+  pbar = tqdm(total=data.shape[1]*(data.shape[1] - 1)//2, leave=False)
+
   errors = []
 
-  for k in tqdm(range(n_batches)):
-    u = torch.ones(data[:,idx_i[k]].shape, device=device, dtype=dtype)
-    v = torch.ones(data[:,idx_j[k]].shape, device=device, dtype=dtype)
+  # Iterate over the lines.
+  for i in range(data.shape[1]):
+    for ii in np.array_split(range(i+1), max(1, i//100)):
 
-    err_u, err_v = [], []
-    i = 0
-    d = 0
-    while len(err_u) == 0 or (max(err_u[-1], err_v[-1]) > threshold and i < max_iter):
-      i += 1
+      # Compute the Sinkhorn dual variables
+      _, wass_log = ot.sinkhorn(
+          data[:,i].contiguous(), # This is the source histogram.
+          data[:,ii].contiguous(), # These are the target histograms.
+          C, # This is the ground cost.
+          eps, # This is the regularization parameter.
+          log=True, # Return the dual variables
+          stopThr=stopThr,
+          numItermax=numItermax
+      )
 
-      torch.matmul(K, v, out=u)
-      u.pow_(-1).mul_(data[:,idx_i[k]])
+      # Compute the exponential dual potentials.
+      f, g = eps*wass_log['u'].log(), eps*wass_log['v'].log()
 
-      torch.matmul(K, u, out=v)
-      v.pow_(-1).mul_(data[:,idx_j[k]])
-      
-      if i % 5 == 0:
-        err_u.append(torch.norm(einsum('ik,ij,jk->ik', u, K, v) - data[:,idx_i[k]], p=1).cpu()/len(idx_i[k]))
-        err_v.append(torch.norm(einsum('ik,ij,jk->jk', u, K, v) - data[:,idx_j[k]], p=1).cpu()/len(idx_j[k]))
+      if len(wass_log['err']) > 0:
+        errors.append(wass_log['err'][-1])
+
+      # Compute the Sinkhorn costs.
+      # These will be used to compute the Sinkhorn divergences
+      wass = (
+          f*data[:,[i]*len(ii)] +
+          g*data[:,ii] -
+          eps*wass_log['u']*(K@wass_log['v'])
+      ).sum(0)
+
+      # Add them in the distance matrix (including symmetric values).
+      D[i,ii] = D[ii,i] = wass
+
+      pbar.update(len(ii))
     
-    errors.append((err_u, err_v))
+  pbar.close()
+  
+  # Get the diagonal terms OT_eps(a, a).
+  d = torch.diagonal(D)
 
-    D[idx_i[k], idx_j[k]] = eps*((torch.log(u)*data[:,idx_i[k]]).sum(0) + (torch.log(v)*data[:,idx_j[k]]).sum(0) - ((K @ v) * u).sum(0)).cpu()
+  # The Sinkhorn divergence is OT(a, b) - (OT(a, a) + OT(b, b))/2.
+  D = D - .5*(d.view(-1, 1) + d.view(1, -1))
 
-  # Unbias distance matrix
-  d = torch.diag(D)
-  d = d + d.reshape(-1, 1)
-  D = D + D.T - .5*d
+  # Make sure there are no negative values.
+  assert((D < 0).sum() == 0)
+
+  # Make sure the diagonal is zero.
   D.fill_diagonal_(0)
 
   if divide_max:
     D /= torch.max(D)
-  
+
   return D.numpy(), errors
 
 def C_index(D, clusters):
