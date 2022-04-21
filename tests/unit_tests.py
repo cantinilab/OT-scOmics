@@ -102,9 +102,8 @@ class TestOTscomics(unittest.TestCase):
         # Compute the OT distance matrix.
         D_ot, _ = otscomics.OT_distance_matrix(
             data_norm, cost=C, eps=eps,
-            n_batches=10, threshold=1e-8,
-            max_iter=100, dtype=torch.double,
-            device='cpu', divide_max=False)
+            dtype=torch.double, device='cpu',
+            divide_max=False)
 
         # Test that D has the right shape.
         self.assertEqual(D_ot.shape, (self.n_obs, self.n_obs))
@@ -122,7 +121,6 @@ class TestOTscomics(unittest.TestCase):
         i, j = np.random.choice(np.arange(self.n_obs), size=2, replace=False)
         a = torch.from_numpy(data_norm[:,i])
         b = torch.from_numpy(data_norm[:,j])
-
         np.testing.assert_almost_equal(
             D_ot[i, j],
             sinkhorn_divergence(a, b, C, eps))
