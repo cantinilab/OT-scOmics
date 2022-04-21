@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import anndata as ad
 import torch
+import ot
 from scipy.spatial.distance import cdist
 
 class TestOTscomics(unittest.TestCase):

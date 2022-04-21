@@ -91,7 +91,7 @@ def OT_distance_matrix(
       ).sum(0)
 
       # Add them in the distance matrix (including symmetric values).
-      D[i,ii] = D[ii,i] = wass
+      D[i,ii] = D[ii,i] = wass.cpu()
 
       pbar.update(len(ii))
     
