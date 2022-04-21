@@ -22,7 +22,7 @@ def OT_distance_matrix(
   n_batches=10, threshold=1e-5,
   dtype=torch.float32, device='cuda',
   divide_max=True, numItermax=500,
-  stopThr=1e-5):
+  stopThr=1e-5, batch_size=200):
   """
   Compute OT distance matrix.
   `data_np`: data as a NumPy matrix (on CPU)
@@ -63,7 +63,7 @@ def OT_distance_matrix(
 
   # Iterate over the lines.
   for i in range(data.shape[1]):
-    for ii in np.array_split(range(i+1), max(1, i//100)):
+    for ii in np.split(range(i+1), np.arange(batch_size, i+1, batch_size)):
 
       # Compute the Sinkhorn dual variables
       _, wass_log = ot.sinkhorn(
