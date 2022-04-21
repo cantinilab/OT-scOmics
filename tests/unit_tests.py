@@ -1,10 +1,32 @@
+from re import A
 import unittest
 import otscomics
 import pandas as pd
 import numpy as np
 import anndata as ad
 import torch
+import ot
 from scipy.spatial.distance import cdist
+
+def ot_distance(a, b, C, eps):
+    cost = torch.from_numpy(C)
+    K = torch.exp(-cost/eps)
+
+    _, wass_log = ot.sinkhorn(
+        a.contiguous(), b.contiguous(),
+        cost, reg=eps, log=True)
+
+    # Compute the exponential dual potentials.
+    f, g = eps*wass_log['u'].log(), eps*wass_log['v'].log()
+
+    # Compute the Sinkhorn cost.
+    return torch.sum(f*a + g*b - eps*wass_log['u']*(K@wass_log['v']))
+
+def sinkhorn_divergence(a, b, C, eps):
+    ab = ot_distance(a, b, C, eps)
+    aa = ot_distance(a, a, C, eps)
+    bb = ot_distance(b, b, C, eps)
+    return ab - .5*(aa + bb)
 
 class TestOTscomics(unittest.TestCase):
 
@@ -62,6 +84,8 @@ class TestOTscomics(unittest.TestCase):
         """Test the pairwise OT distance.
         """
 
+        eps = .5
+
         # Per-cell normalization (mandatory).
         data_norm = self.adata.X.T.astype(np.double)
         data_norm /= data_norm.sum(0)
@@ -77,9 +101,9 @@ class TestOTscomics(unittest.TestCase):
         
         # Compute the OT distance matrix.
         D_ot, _ = otscomics.OT_distance_matrix(
-            data_norm, cost=C, eps=.5,
-            n_batches=10, threshold=1e-8,
-            max_iter=100, dtype=torch.double, device='cpu')
+            data_norm, cost=C, eps=eps,
+            dtype=torch.double, device='cpu',
+            divide_max=False)
 
         # Test that D has the right shape.
         self.assertEqual(D_ot.shape, (self.n_obs, self.n_obs))
@@ -92,6 +116,15 @@ class TestOTscomics(unittest.TestCase):
 
         # Test that D has zero diagonal.
         np.testing.assert_almost_equal(np.diag(D_ot), np.zeros(self.n_obs))
+
+        # Test that D contains the right distances.
+        i, j = np.random.choice(np.arange(self.n_obs), size=2, replace=False)
+        a = torch.from_numpy(data_norm[:,i])
+        b = torch.from_numpy(data_norm[:,j])
+        np.testing.assert_almost_equal(
+            D_ot[i, j],
+            sinkhorn_divergence(a, b, C, eps))
+        
     
     def test_c_index(self) -> None:
         """Test the simple C index function
