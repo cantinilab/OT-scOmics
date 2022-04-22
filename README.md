@@ -1,4 +1,4 @@
-[![DOI](https://zenodo.org/badge/344845096.svg)](https://zenodo.org/badge/latestdoi/344845096) [![Documentation Status](https://readthedocs.org/projects/ot-scomics/badge/?version=latest)](https://ot-scomics.readthedocs.io/en/latest/?badge=latest)
+[![DOI](https://zenodo.org/badge/344845096.svg)](https://zenodo.org/badge/latestdoi/344845096) [![Documentation Status](https://readthedocs.org/projects/ot-scomics/badge/?version=latest)](https://ot-scomics.readthedocs.io/en/latest/?badge=latest) [![PyPI version](https://img.shields.io/pypi/v/otscomics)](https://pypi.org/project/otscomics/)
 
 # Optimal Transport improves cell-cell similarity inference in single-cell omics data
 
