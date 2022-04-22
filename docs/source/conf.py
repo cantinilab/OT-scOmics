@@ -17,7 +17,12 @@ sys.path.append(os.path.abspath(
     os.path.join(__file__, "../../../src")
 ))
 
-print(sys.path)
+autodoc_mock_imports = [
+    "torch",
+    "scipy",
+    "ot",
+    'tqdm'
+    ]
 
 # -- Project information -----------------------------------------------------
 
