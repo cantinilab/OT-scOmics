@@ -12,11 +12,7 @@ We propose the use of Optimal Transport (OT) as a cell-cell similarity metric fo
 
 ## Installing the package
 
-To install the `otscomics` package, run the following line from this folder
-
-    pip install .
-
-We also provide a conda environment `environment.yml` file.
+    pip install otscomics
 
 ## Running on Colab GPU
 
