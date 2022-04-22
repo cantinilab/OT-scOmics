@@ -16,7 +16,7 @@ We propose the use of Optimal Transport (OT) as a cell-cell similarity metric fo
 
 ## Documentation
 
-[ot-scomics.rtfd.io](ot-scomics.rtfd.io)
+[https://ot-scomics.rtfd.io](https://ot-scomics.rtfd.io)
 
 ## Jupyter Notebook
 
