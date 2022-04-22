@@ -16,7 +16,7 @@ We propose the use of Optimal Transport (OT) as a cell-cell similarity metric fo
 
 ## Running on Colab GPU
 
-While this notebook can be run un CPU, computations will be faster on GPU. If you do not have access to a GPU you may want to use the (free) Google Colab platform to run this notebook. For that, you can simply access the notebook at this link: [colab.research.google.com/github/ComputationalSystemsBiology/.../OT_scOmics.ipynb](https://colab.research.google.com/github/ComputationalSystemsBiology/OT-scOmics/blob/main/OT_scOmics.ipynb).
+While this notebook can be run un CPU, computations will be faster on GPU. If you do not have access to a GPU you may want to use the (free) Google Colab platform to run this notebook. For that, you can simply access the notebook at this link: [colab.research.google.com/github/ComputationalSystemsBiology/.../OT_scOmics.ipynb](https://colab.research.google.com/github/ComputationalSystemsBiology/OT-scOmics/blob/main/docs/source/vignettes/OT_scOmics.ipynb).
 
 Please note that you will have to import the preprocessed csv data to the Colab runtime.
 
