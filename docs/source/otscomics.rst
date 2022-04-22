@@ -1,7 +1,7 @@
 otscomics
 --------------------
 
-.. automodule:: src/otscomics
+.. automodule:: otscomics
    :members:
    :undoc-members:
    :show-inheritance:
