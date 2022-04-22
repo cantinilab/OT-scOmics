@@ -12,13 +12,13 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('../../mowgli'))
+sys.path.insert(0, os.path.abspath('../../otscomics'))
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'mowgli'
-copyright = '2021, Geert-Jan Huizing, Gabriel Peyré, Laura Cantini'
+project = 'otscomics'
+copyright = '2022, Geert-Jan Huizing, Gabriel Peyré, Laura Cantini'
 author = 'Geert-Jan Huizing, Gabriel Peyré, Laura Cantini'
 
 
@@ -30,7 +30,6 @@ author = 'Geert-Jan Huizing, Gabriel Peyré, Laura Cantini'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
-    'nbsphinx'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
