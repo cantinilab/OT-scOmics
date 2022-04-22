@@ -30,6 +30,7 @@ author = 'Geert-Jan Huizing, Gabriel Peyré, Laura Cantini'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
+    'nbsphinx'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
