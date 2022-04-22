@@ -1,8 +1,10 @@
-[![DOI](https://zenodo.org/badge/344845096.svg)](https://zenodo.org/badge/latestdoi/344845096)
+[![PyPI version](https://img.shields.io/pypi/v/otscomics)](https://pypi.org/project/otscomics/)
+[![Documentation Status](https://readthedocs.org/projects/ot-scomics/badge/?version=latest)](https://ot-scomics.readthedocs.io/en/latest/?badge=latest)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6477303.svg)](https://doi.org/10.5281/zenodo.6477303)
 
 # Optimal Transport improves cell-cell similarity inference in single-cell omics data
 
-This Jupyter Notebook will walk you trough the code to replicate the experiments from our research on applying Optimal Transport as a similarity metric in between single-cell omics data.
+This Python package will allow you to replicate the experiments from our research on applying Optimal Transport as a similarity metric in between single-cell omics data.
 
 ![image](https://user-images.githubusercontent.com/30904288/110963850-da6c0000-8352-11eb-8c0a-f725c1736169.png)
 
@@ -14,11 +16,15 @@ We propose the use of Optimal Transport (OT) as a cell-cell similarity metric fo
 
     pip install otscomics
 
-## Running on Colab GPU
+## Documentation
 
-While this notebook can be run un CPU, computations will be faster on GPU. If you do not have access to a GPU you may want to use the (free) Google Colab platform to run this notebook. For that, you can simply access the notebook at this link: [colab.research.google.com/github/ComputationalSystemsBiology/.../OT_scOmics.ipynb](https://colab.research.google.com/github/ComputationalSystemsBiology/OT-scOmics/blob/main/docs/source/vignettes/OT_scOmics.ipynb).
+[https://ot-scomics.rtfd.io](https://ot-scomics.rtfd.io)
 
-Please note that you will have to import the preprocessed csv data to the Colab runtime.
+## Jupyter Notebook
+
+The documentation includes a Jupyter Notebook demonstrating the package. While this notebook can be run un CPU, computations will be faster on GPU.
+
+If you do not have access to a GPU you may want to use the (free) Google Colab platform to run this notebook: [colab.research.google.com/github/ComputationalSystemsBiology/.../OT_scOmics.ipynb](https://colab.research.google.com/github/ComputationalSystemsBiology/OT-scOmics/blob/main/docs/source/vignettes/OT_scOmics.ipynb).
 
 Please make sure that the GPU is enabled. Navigate to "Edit→Notebook Settings" and select "GPU" from the "Hardware Accelerator" drop-down.
 
