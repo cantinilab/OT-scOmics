@@ -22,6 +22,7 @@ autodoc_mock_imports = [
     "scipy",
     "ot",
     'tqdm'
+    'numpy'
     ]
 
 # -- Project information -----------------------------------------------------
