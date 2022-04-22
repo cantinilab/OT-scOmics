@@ -1,4 +1,4 @@
-otscomics: OT distances for single-cell data
+OT-scOmics: OT distances for single-cell data
 ====================================================
 
 .. toctree::
