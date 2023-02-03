@@ -12,6 +12,10 @@ This Python package will allow you to replicate the experiments from our researc
 
 We propose the use of Optimal Transport (OT) as a cell-cell similarity metric for single-cell omics data. The code in this repository implements entropic-regularized OT distance computation with PyTorch, and applies it to public datasets of single-cell omics data. We compare the results to commonly used metrics like the euclidean distance or Pearson correlation, and demonstrate that OT increases performances in cell-cell similarity inference.
 
+## How many cells can I use?
+
+Computing pairwise distance matrices is expensive (O(n²) operations for n cells), so we advise users of the package to limit the number of cells studied to a few thousand.
+
 ## Installing the package
 
     pip install otscomics
